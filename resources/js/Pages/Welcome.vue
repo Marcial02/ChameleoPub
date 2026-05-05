@@ -1,6 +1,10 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import NavLink from '@/Components/NavLink.vue';
+import Dropdown from '@/Components/Dropdown.vue'; // Idagdag ito
+import DropdownLink from '@/Components/DropdownLink.vue'; // Idagdag ito
+import { ref } from 'vue'; // Kailangan para sa mobile hamburger menu
+
+const showingNavigationDropdown = ref(false);
 
 defineProps({
     canLogin: {
@@ -45,49 +49,63 @@ function handleImageError() {
 
                     <!-- 3. Ang Content (Dito mo ilalagay ang Header at Cards) -->
                     <div class="relative z-10">
-                        <header
-                    class="grid grid-cols-3 items-center gap-2 py-3 px-5 lg:grid-cols-3
-                    bg-[#111]/50 items-center"
-                >
-                    <div class="flex lg:col-start-1 lg:justify-center">
-                        <Link :href="route('home')" >
-                            <img src="keoniteLogo.svg" alt="" class="w-20 object-cover h-10">
-                        </Link>
-                    </div>
-                    <nav class="-mx-3 flex flex-1 justify-center gap-10 ">
-                     <Link class=" text-white rounded-md px-3 py-2  ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                     >Novels</Link>
-                     <Link class=" text-white rounded-md px-3 py-2  ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        WebComics</Link>
 
-                    </nav>
-                    <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end px-10">
-                        <Link
-                            v-if="$page.props.auth.user"
-                            :href="route('dashboard')"
-                            class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                        >
-                            Dashboard
-                        </Link>
 
-                        <template v-else>
-                            <Link
-                                :href="route('login')"
-                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Log in
-                            </Link>
+                <header class="bg-[#111]/50 py-3 px-5 relative z-20">
+    <div class="grid grid-cols-2 lg:grid-cols-3 items-center px-[10%]">
+        <!-- Logo -->
+        <div class="flex lg:col-start-1">
+            <Link :href="route('home')">
+                <img src="keoniteLogo.svg" alt="" class="w-20 object-cover h-10">
+            </Link>
+        </div>
 
-                            <Link
-                                v-if="canRegister"
-                                :href="route('register')"
-                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Register
-                            </Link>
-                        </template>
-                    </nav>
-                </header>
+        <!-- Desktop Navigation (Hidden on mobile) -->
+        <nav class="hidden sm:flex flex-1 justify-center gap-10">
+            <Link class="text-white hover:text-white/70">Novels</Link>
+            <Link class="text-white hover:text-white/70">WebComics</Link>
+        </nav>
+
+        <!-- Desktop Auth Links & Hamburger Button -->
+        <div class="flex items-center justify-end">
+            <!-- Auth Links (Hidden on mobile) -->
+            <nav v-if="canLogin" class="hidden sm:flex gap-4 px-10">
+                <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="text-white">Dashboard</Link>
+                <template v-else>
+                    <Link :href="route('login')" class="text-white">Log in</Link>
+                    <Link v-if="canRegister" :href="route('register')" class="text-white">Register</Link>
+                </template>
+            </nav>
+
+            <!-- Hamburger Button (Visible only on mobile) -->
+            <div class="flex items-center sm:hidden">
+                <button @click="showingNavigationDropdown = !showingNavigationDropdown" class="p-2 text-gray-400 hover:text-white">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path :class="{'hidden': showingNavigationDropdown, 'inline-flex': !showingNavigationDropdown }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{'hidden': !showingNavigationDropdown, 'inline-flex': showingNavigationDropdown }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Responsive Mobile Menu (Lalabas kapag true ang showingNavigationDropdown) -->
+    <div :class="{'block': showingNavigationDropdown, 'hidden': !showingNavigationDropdown}" class="sm:hidden bg-black/90 absolute w-full left-0 top-full px-5 py-4 space-y-3">
+        <Link class="block text-white text-lg border-b border-white/10 pb-2">Novels</Link>
+        <Link class="block text-white text-lg border-b border-white/10 pb-2">WebComics</Link>
+
+        <div v-if="canLogin" class="pt-4">
+            <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="block text-white">Dashboard</Link>
+            <template v-else>
+                <Link :href="route('login')" class="block text-white mb-2">Log in</Link>
+                <Link v-if="canRegister" :href="route('register')" class="block text-white">Register</Link>
+            </template>
+        </div>
+    </div>
+</header>
+
+
+
                 <main>
                     <div class="flex justify-center p-20 text-white flex-col text-center gap-10">
                     <H1 class="text-xl">Read your Favorite Novels and Comics!</H1>
@@ -406,4 +424,6 @@ function handleImageError() {
             </div>
         </div> -->
     </div>
+
+
 </template>

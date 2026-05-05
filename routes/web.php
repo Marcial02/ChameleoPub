@@ -6,6 +6,13 @@ use App\Http\Controllers\NovelController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+
+Route::get('/test-aws', function () {
+    // Gagawa ng file na "test.txt" sa loob ng S3 bucket mo
+    Storage::disk('s3')->put('test.txt', 'Gumagana na ang AWS ko!');
+    return "Success! Check mo na ang S3 Bucket mo sa AWS Console.";
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
