@@ -110,6 +110,12 @@ function handleImageError() {
                     <div class="flex justify-center p-20 text-white flex-col text-center gap-10">
                     <H1 class="text-xl">Read your Favorite Novels and Comics!</H1>
                     <p>The Excitement is Under Construction!</p>
+                    <p>What's working at the moment:</p>
+                    <ul>
+                        <li>Login / Register with Email verification</li>
+                        <li>Create Novels and Chapters</li>
+                        <li>AWS S3 integration</li>
+                    </ul>
                     </div>
                 </main>
                  <footer
