@@ -1,6 +1,15 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+
+
+RewriteRule ^qn2026$ https://docs.google.com/forms/d/e/1FAIpQLScmQaM6obbVYFnhR-Pxw9rabdhr4LnGBQM0Jg6DhLnNIwIo5A/viewform?usp=dialog [L,R=301]
+     
+     RewriteRule ^goodbyeearth$ https://www.youtube.com/watch?v=G8bDhpGp2FA&list=RDG8bDhpGp2FA&start_radio=1 [L,R=301]
+     
+      RewriteRule ^services$ https://docs.google.com/forms/d/e/1FAIpQLSeJa0yWZHPZx66GoC1oIeUUEnS3NOnN0RXtbuZ-Kx6-8hcsrA/viewform?usp=dialog [L,R=301]
+
+      
     # --- 1. GOOGLE DRIVE REDIRECTS ---
     # Inilalagay natin ito sa itaas para ma-process agad bago ang Laravel/Public routing
 
